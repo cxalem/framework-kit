@@ -1,0 +1,20 @@
+{
+	"name": "@solana/test-types-smoke",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"test": "pnpm typecheck",
+		"typecheck": "tsc -p tsconfig.json"
+	},
+	"dependencies": {
+		"@solana/client": "workspace:*",
+		"@solana/react-hooks": "workspace:*",
+		"react": "^19.0.0"
+	},
+	"devDependencies": {
+		"@types/node": "^24",
+		"@types/react": "^19",
+		"typescript": "^5.6.3"
+	}
+}
