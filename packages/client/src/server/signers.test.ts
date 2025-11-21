@@ -1,15 +1,10 @@
-import bs58 from 'bs58';
 import { mkdtemp, rm } from 'node:fs/promises';
-import { join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import bs58 from 'bs58';
 import { describe, expect, it } from 'vitest';
 
-import {
-	loadKeypairFromBase58,
-	loadKeypairFromBytes,
-	loadKeypairFromFile,
-	saveKeypairToFile,
-} from './signers';
+import { loadKeypairFromBase58, loadKeypairFromBytes, loadKeypairFromFile, saveKeypairToFile } from './signers';
 
 describe('server signers', () => {
 	it('derives signer and expanded secret key from base58 input', async () => {
