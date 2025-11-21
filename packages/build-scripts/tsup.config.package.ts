@@ -9,11 +9,15 @@ if (packageDirName === 'react-hooks') {
 	external.push('@solana/client');
 }
 
-const entry = ['src/index.ts'];
+const baseEntry = ['src/index.ts'];
+const nodeEntry = packageDirName === 'client' ? [...baseEntry, 'src/server/index.ts'] : baseEntry;
+const browserEntry = baseEntry;
+const neutralEntry = baseEntry;
+
 const common = {
 	clean: true,
 	dts: false,
-	entry,
+	entry: nodeEntry,
 	keepNames: true,
 	minify: false,
 	shims: false,
@@ -29,6 +33,7 @@ const common = {
 export default defineConfig([
 	{
 		...common,
+		entry: nodeEntry,
 		format: ['esm', 'cjs'],
 		outDir: 'dist',
 		outExtension({ format }) {
@@ -40,6 +45,7 @@ export default defineConfig([
 	},
 	{
 		...common,
+		entry: browserEntry,
 		format: ['esm', 'cjs'],
 		outDir: 'dist',
 		outExtension({ format }) {
@@ -51,6 +57,7 @@ export default defineConfig([
 	},
 	{
 		...common,
+		entry: neutralEntry,
 		format: ['esm'],
 		outDir: 'dist',
 		outExtension() {

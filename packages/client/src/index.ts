@@ -123,3 +123,4 @@ export {
 	getWalletStandardConnectors,
 	watchWalletStandardConnectors,
 } from './wallet/standard';
+export { resolveCluster, type ClusterMoniker } from './utils/cluster';
