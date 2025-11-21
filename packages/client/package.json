@@ -3,28 +3,31 @@
 	"version": "0.1.1",
 	"description": "Framework-agnostic Solana client orchestration layer powering higher-level experiences",
 	"exports": {
-		"edge-light": {
+		".": {
+			"edge-light": {
+				"import": "./dist/index.node.mjs",
+				"require": "./dist/index.node.cjs"
+			},
+			"workerd": {
+				"import": "./dist/index.node.mjs",
+				"require": "./dist/index.node.cjs"
+			},
+			"browser": {
+				"import": "./dist/index.browser.mjs",
+				"require": "./dist/index.browser.cjs"
+			},
+			"node": {
+				"import": "./dist/index.node.mjs",
+				"require": "./dist/index.node.cjs"
+			},
+			"react-native": "./dist/index.native.mjs",
 			"import": "./dist/index.node.mjs",
-			"require": "./dist/index.node.cjs"
+			"require": "./dist/index.node.cjs",
+			"default": "./dist/index.node.mjs"
 		},
-		"workerd": {
-			"import": "./dist/index.node.mjs",
-			"require": "./dist/index.node.cjs"
-		},
-		"browser": {
-			"import": "./dist/index.browser.mjs",
-			"require": "./dist/index.browser.cjs"
-		},
-		"node": {
-			"import": "./dist/index.node.mjs",
-			"require": "./dist/index.node.cjs"
-		},
-		"react-native": "./dist/index.native.mjs",
-		"types": "./dist/types/index.d.ts",
 		"./server": {
 			"import": "./dist/server/index.node.mjs",
-			"require": "./dist/server/index.node.cjs",
-			"types": "./dist/types/server/index.d.ts"
+			"require": "./dist/server/index.node.cjs"
 		}
 	},
 	"browser": {

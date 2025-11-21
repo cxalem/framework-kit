@@ -8,6 +8,9 @@ const tsconfigPath = packageDirName === 'react-hooks' ? 'tsconfig.bundle.json' :
 if (packageDirName === 'react-hooks') {
 	external.push('@solana/client');
 }
+if (packageDirName === 'server-client') {
+	external.push('@solana/client', '@solana/client/server', '@solana/kit', '@solana/kit/*');
+}
 
 const baseEntry = ['src/index.ts'];
 const nodeEntry = packageDirName === 'client' ? [...baseEntry, 'src/server/index.ts'] : baseEntry;

@@ -4,11 +4,7 @@
 	"extends": "../tsconfig/base.json",
 	"compilerOptions": {
 		"lib": ["DOM", "ES2022"],
-		"paths": {
-			"@solana/client": ["../client/src/index.ts"],
-			"@solana/client/server": ["../client/src/server/index.ts"],
-			"@solana/kit": ["../client/node_modules/@solana/kit/dist/types/index.d.ts"]
-		}
+		"paths": {}
 	},
 	"include": ["../build-scripts/build-time-constants.d.ts", "src"],
 	"exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]
