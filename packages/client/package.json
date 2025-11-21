@@ -5,31 +5,20 @@
 	"exports": {
 		".": {
 			"types": "./dist/types/index.d.ts",
-			"edge-light": {
-				"import": "./dist/index.node.mjs",
-				"require": "./dist/index.node.cjs"
-			},
-			"workerd": {
-				"import": "./dist/index.node.mjs",
-				"require": "./dist/index.node.cjs"
-			},
-			"browser": {
-				"import": "./dist/index.browser.mjs",
-				"require": "./dist/index.browser.cjs"
-			},
-			"node": {
-				"import": "./dist/index.node.mjs",
-				"require": "./dist/index.node.cjs"
-			},
+			"browser": "./dist/index.browser.mjs",
+			"edge-light": "./dist/index.node.mjs",
+			"workerd": "./dist/index.node.mjs",
+			"node": "./dist/index.node.mjs",
 			"react-native": "./dist/index.native.mjs",
 			"import": "./dist/index.node.mjs",
 			"require": "./dist/index.node.cjs",
 			"default": "./dist/index.node.mjs"
 		},
 		"./server": {
+			"types": "./dist/types/server/index.d.ts",
 			"import": "./dist/server/index.node.mjs",
 			"require": "./dist/server/index.node.cjs",
-			"types": "./dist/types/server/index.d.ts"
+			"default": "./dist/server/index.node.mjs"
 		}
 	},
 	"browser": {
