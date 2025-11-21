@@ -1,6 +1,7 @@
 import { useAccount } from '@solana/react-hooks';
 import { type ChangeEvent, useMemo, useState } from 'react';
 
+import { formatAccountData } from '../lib/utils';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
@@ -15,16 +16,7 @@ export function AccountInspectorCard() {
 		watch,
 	});
 
-	const formattedData = useMemo(() => {
-		if (!account?.data) {
-			return 'No account data fetched yet.';
-		}
-		try {
-			return JSON.stringify(account.data, null, 2);
-		} catch {
-			return String(account.data);
-		}
-	}, [account]);
+	const formattedData = useMemo(() => formatAccountData(account?.data), [account]);
 
 	const statusLabel = (() => {
 		if (target === '') {
@@ -33,10 +25,10 @@ export function AccountInspectorCard() {
 		if (!account) {
 			return 'Loading account data…';
 		}
-		if (account.error) {
-			return `Fetch error: ${formatError(account.error)}`;
+		if (account?.error) {
+			return `Fetch error: ${formatError(account?.error)}`;
 		}
-		return `Lamports: ${account.lamports ?? 'unknown'} · Slot: ${account.slot ?? 'unknown'}`;
+		return `Lamports: ${account?.lamports ?? 'unknown'} · Slot: ${account?.slot ?? 'unknown'}`;
 	})();
 
 	const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
