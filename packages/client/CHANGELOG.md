@@ -1,5 +1,15 @@
 # @solana/client
 
+## 0.2.0
+
+### Minor Changes
+
+- [#42](https://github.com/solana-foundation/framework-kit/pull/42) [`d70e7d6`](https://github.com/solana-foundation/framework-kit/commit/d70e7d623e40fbfe5b82d3e08e7bd1d35d6c44d0) Thanks [@GuiBibeau](https://github.com/GuiBibeau)! - Add typed Parameters/ReturnType aliases and client-first wrapper exports for all public actions.
+
+### Patch Changes
+
+- [#40](https://github.com/solana-foundation/framework-kit/pull/40) [`b899ca6`](https://github.com/solana-foundation/framework-kit/commit/b899ca648d7cdd8761af55986723fb1bce73f055) Thanks [@GuiBibeau](https://github.com/GuiBibeau)! - Add Wallet Standard connector factories (`autoDiscover`, `injected`, `phantom/solflare/backpack`), expose them via `@solana/client/connectors`, and cover metadata/dedup with tests.
+
 ## 0.1.4
 
 ### Patch Changes
