@@ -5,10 +5,9 @@ import {
 	phantom,
 	type SolanaClientConfig,
 	solflare,
-	type WalletConnector,
 } from '@solana/client';
 import { SolanaProvider } from '@solana/react-hooks';
-import { Suspense, useMemo } from 'react';
+import { Suspense } from 'react';
 
 import { AccountInspectorCard } from './components/AccountInspectorCard.tsx';
 import { AirdropCard } from './components/AirdropCard.tsx';
@@ -34,29 +33,19 @@ const DEFAULT_CLIENT_CONFIG: SolanaClientConfig = {
 	websocketEndpoint: 'wss://api.devnet.solana.com',
 };
 
-export default function App() {
-	const walletConnectors = useMemo(
-		() => dedupeConnectors([...phantom(), ...solflare(), ...backpack(), ...autoDiscover()]),
-		[],
-	);
-	const rpcClient = useMemo(
-		() =>
-			createSolanaRpcClient({
-				commitment: DEFAULT_CLIENT_CONFIG.commitment,
-				endpoint: DEFAULT_CLIENT_CONFIG.endpoint,
-				websocketEndpoint: DEFAULT_CLIENT_CONFIG.websocketEndpoint,
-			}),
-		[],
-	);
+const WALLET_CONNECTORS = [...phantom(), ...solflare(), ...backpack(), ...autoDiscover()];
+const RPC_CLIENT = createSolanaRpcClient({
+	commitment: DEFAULT_CLIENT_CONFIG.commitment,
+	endpoint: DEFAULT_CLIENT_CONFIG.endpoint,
+	websocketEndpoint: DEFAULT_CLIENT_CONFIG.websocketEndpoint,
+});
 
-	const clientConfig = useMemo<SolanaClientConfig>(
-		() => ({
-			...DEFAULT_CLIENT_CONFIG,
-			rpcClient,
-			walletConnectors,
-		}),
-		[rpcClient, walletConnectors],
-	);
+export default function App() {
+	const clientConfig: SolanaClientConfig = {
+		...DEFAULT_CLIENT_CONFIG,
+		rpcClient: RPC_CLIENT,
+		walletConnectors: WALLET_CONNECTORS,
+	};
 
 	return (
 		<SolanaProvider
@@ -67,16 +56,6 @@ export default function App() {
 			<DemoApp />
 		</SolanaProvider>
 	);
-}
-
-function dedupeConnectors(connectors: ReadonlyArray<WalletConnector | readonly WalletConnector[]>) {
-	const seen = new Set<string>();
-	const flat = connectors.flatMap((connector) => (Array.isArray(connector) ? connector : [connector]));
-	return flat.filter((connector) => {
-		if (seen.has(connector.id)) return false;
-		seen.add(connector.id);
-		return true;
-	});
 }
 
 function DemoApp() {
