@@ -37,7 +37,7 @@ const DEFAULT_CLIENT_CONFIG: SolanaClientConfig = {
 
 export default function App() {
 	const walletConnectors = useMemo(
-		() => dedupeConnectors([...injected(), ...phantom(), ...solflare(), ...backpack(), ...autoDiscover()]),
+		() => dedupeConnectors([injected(), ...phantom(), ...solflare(), ...backpack(), ...autoDiscover()]),
 		[],
 	);
 	const rpcClient = useMemo(
@@ -70,9 +70,10 @@ export default function App() {
 	);
 }
 
-function dedupeConnectors(connectors: readonly WalletConnector[]) {
+function dedupeConnectors(connectors: ReadonlyArray<WalletConnector | readonly WalletConnector[]>) {
 	const seen = new Set<string>();
-	return connectors.filter((connector) => {
+	const flat = connectors.flatMap((connector) => (Array.isArray(connector) ? connector : [connector]));
+	return flat.filter((connector) => {
 		if (seen.has(connector.id)) return false;
 		seen.add(connector.id);
 		return true;
