@@ -587,7 +587,8 @@ export function useTransactionPool(config: UseTransactionPoolConfig = {}): Reado
 	const helper = client.helpers.transaction;
 	const swrRefreshInterval = config.latestBlockhash?.swr?.refreshInterval;
 	const blockhashRefreshInterval =
-		config.latestBlockhash?.refreshInterval ?? (typeof swrRefreshInterval === 'number' ? swrRefreshInterval : undefined);
+		config.latestBlockhash?.refreshInterval ??
+		(typeof swrRefreshInterval === 'number' ? swrRefreshInterval : undefined);
 	const blockhashMaxAgeMs = blockhashRefreshInterval ?? 30_000;
 	const controller = useMemo<TransactionPoolController>(
 		() =>
