@@ -14,11 +14,17 @@ pnpm add @solana/client
 ## Quick start
 
 ```ts
-import { createClient } from "@solana/client";
+import { autoDiscover, backpack, createClient, phantom, solflare } from "@solana/client";
 
+const walletConnectors = [...phantom(), ...solflare(), ...backpack(), ...autoDiscover()];
 const client = createClient({
   endpoint: "https://api.devnet.solana.com",
+  websocketEndpoint: "wss://api.devnet.solana.com",
+  walletConnectors,
 });
+
+// Connect Wallet Standard apps via their connector ids.
+await client.actions.connectWallet("phantom");
 
 // Fetch an account once.
 const account = await client.actions.fetchAccount(address);
@@ -68,9 +74,10 @@ Need just the tuning step? Call `client.prepareTransaction` directly with your u
 
 ## Wallet helpers
 
-Use `createWalletStandardConnector` to wrap Wallet Standard apps and register them with
-`createWalletRegistry`. The registry powers `client.actions.connectWallet` and the React hooks
-package, but you can also query it directly to build your own selectors.
+Start with connectors: `phantom()`, `solflare()`, `backpack()`, and `autoDiscover()` return Wallet Standard-aware
+connectors you can pass to `createClient` or `createWalletRegistry`. Wrap additional wallets with
+`createWalletStandardConnector` before registering. The registry powers `client.actions.connectWallet` and the
+React hooks package, but you can also query it directly to build your own selectors.
 
 ## Scripts
 

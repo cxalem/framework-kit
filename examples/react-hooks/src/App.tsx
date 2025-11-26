@@ -1,4 +1,4 @@
-import { autoDiscover, backpack, phantom, type SolanaClientConfig, solflare } from '@solana/client';
+import { autoDiscover, backpack, createClient, phantom, solflare } from '@solana/client';
 import { SolanaProvider } from '@solana/react-hooks';
 import { Suspense } from 'react';
 
@@ -19,18 +19,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs.t
 import { WalletControls } from './components/WalletControls.tsx';
 
 const LAST_CONNECTOR_STORAGE_KEY = 'solana:last-connector';
+const walletConnectors = [...phantom(), ...solflare(), ...backpack(), ...autoDiscover()];
+const client = createClient({
+	commitment: 'confirmed',
+	endpoint: 'https://api.devnet.solana.com',
+	websocketEndpoint: 'wss://api.devnet.solana.com',
+	walletConnectors,
+});
 
 export default function App() {
-	const clientConfig: SolanaClientConfig = {
-		commitment: 'confirmed',
-		endpoint: 'https://api.devnet.solana.com',
-		websocketEndpoint: 'wss://api.devnet.solana.com',
-		walletConnectors: [...phantom(), ...solflare(), ...backpack(), ...autoDiscover()],
-	};
-
 	return (
 		<SolanaProvider
-			config={clientConfig}
+			client={client}
 			query={{ suspense: true }}
 			walletPersistence={{ storageKey: LAST_CONNECTOR_STORAGE_KEY }}
 		>

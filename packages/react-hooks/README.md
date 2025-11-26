@@ -13,15 +13,18 @@ pnpm add @solana/react-hooks
 
 ## Minimal example
 
-Mount the provider once and call hooks anywhere in the subtree.
+Build connectors first, create a client, and hand it to the combined provider.
 
 ```tsx
-import {
-    SolanaClientProvider,
-    useBalance,
-    useConnectWallet,
-    useWallet,
-} from '@solana/react-hooks';
+import { autoDiscover, backpack, createClient, phantom, solflare } from '@solana/client';
+import { SolanaProvider, useBalance, useConnectWallet, useWallet } from '@solana/react-hooks';
+
+const walletConnectors = [...phantom(), ...solflare(), ...backpack(), ...autoDiscover()];
+const client = createClient({
+    endpoint: 'https://api.devnet.solana.com',
+    websocketEndpoint: 'wss://api.devnet.solana.com',
+    walletConnectors,
+});
 
 function WalletButton() {
     const connectWallet = useConnectWallet();
@@ -40,18 +43,22 @@ function WalletBalance() {
 
 export function App() {
     return (
-        <SolanaClientProvider
-            config={{
-                endpoint: 'https://api.devnet.solana.com',
-                websocketEndpoint: 'wss://api.devnet.solana.com',
-            }}
-        >
+        <SolanaProvider client={client} query={{ suspense: true }}>
             <WalletButton />
             <WalletBalance />
-        </SolanaClientProvider>
+        </SolanaProvider>
     );
 }
 ```
+
+`SolanaProvider` composes `SolanaClientProvider` and `SolanaQueryProvider` with SWR v2-aligned defaults
+(`revalidateOnFocus`/`revalidateOnReconnect`/`revalidateIfStale` are `true`, `dedupingInterval` is `2000`,
+`focusThrottleInterval` is `5000`). Override them via the `query.config` prop or per-hook `swr` options.
+Prefer passing a `client`; `config`-based setup on `SolanaClientProvider` is still available for bespoke
+composition.
+
+Every hook exposes `UseHookNameParameters` / `UseHookNameReturnType` aliases so wrapper components stay in
+sync with the public API.
 
 ## Hooks at a glance
 
@@ -318,7 +325,7 @@ Poll or refetch the cluster's latest blockhash.
 import { SolanaQueryProvider, useLatestBlockhash } from '@solana/react-hooks';
 
 function BlockhashTicker() {
-    const latest = useLatestBlockhash({ refreshInterval: 20_000 });
+    const latest = useLatestBlockhash({ swr: { refreshInterval: 20_000 } });
     if (latest.status === 'loading') return <p>Fetching blockhash…</p>;
     if (latest.status === 'error') return <p role="alert">Failed to fetch blockhash.</p>;
 
@@ -343,7 +350,15 @@ export function BlockhashCard() {
 ### Program accounts
 
 ```tsx
-import { SolanaClientProvider, SolanaQueryProvider, useProgramAccounts } from '@solana/react-hooks';
+import { autoDiscover, backpack, createClient, phantom, solflare } from '@solana/client';
+import { SolanaProvider, SolanaQueryProvider, useProgramAccounts } from '@solana/react-hooks';
+
+const walletConnectors = [...phantom(), ...solflare(), ...backpack(), ...autoDiscover()];
+const client = createClient({
+    endpoint: 'https://api.devnet.solana.com',
+    websocketEndpoint: 'wss://api.devnet.solana.com',
+    walletConnectors,
+});
 
 function ProgramAccountsList({ programAddress }) {
     const query = useProgramAccounts(programAddress);
@@ -365,11 +380,11 @@ function ProgramAccountsList({ programAddress }) {
 
 export function QueryDemo({ programAddress }) {
     return (
-        <SolanaClientProvider config={{ endpoint: 'https://api.devnet.solana.com' }}>
+        <SolanaProvider client={client}>
             <SolanaQueryProvider>
                 <ProgramAccountsList programAddress={programAddress} />
             </SolanaQueryProvider>
-        </SolanaClientProvider>
+        </SolanaProvider>
     );
 }
 ```

@@ -585,7 +585,10 @@ export function useTransactionPool(config: UseTransactionPoolConfig = {}): Reado
 	);
 	const client = useSolanaClient();
 	const helper = client.helpers.transaction;
-	const blockhashMaxAgeMs = config.latestBlockhash?.refreshInterval ?? 30_000;
+	const swrRefreshInterval = config.latestBlockhash?.swr?.refreshInterval;
+	const blockhashRefreshInterval =
+		config.latestBlockhash?.refreshInterval ?? (typeof swrRefreshInterval === 'number' ? swrRefreshInterval : undefined);
+	const blockhashMaxAgeMs = blockhashRefreshInterval ?? 30_000;
 	const controller = useMemo<TransactionPoolController>(
 		() =>
 			createTransactionPoolController({

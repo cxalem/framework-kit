@@ -6,6 +6,32 @@ The example mirrors the vanilla proof-of-concept by wiring wallet discovery, SOL
 
 All hooks expose `UseHookNameParameters` / `UseHookNameReturnType` aliases so you can type your own helpers consistently with the library.
 
+The app starts with connector-first setup: build connectors, create a client, and pass it to the provider (which
+includes the query layer).
+
+```tsx
+import { autoDiscover, backpack, createClient, phantom, solflare } from '@solana/client';
+import { SolanaProvider } from '@solana/react-hooks';
+
+const walletConnectors = [...phantom(), ...solflare(), ...backpack(), ...autoDiscover()];
+const client = createClient({
+	endpoint: 'https://api.devnet.solana.com',
+	websocketEndpoint: 'wss://api.devnet.solana.com',
+	walletConnectors,
+});
+
+export function App() {
+	return (
+		<SolanaProvider client={client} query={{ suspense: true }}>
+			{/* components under examples/react-hooks/src/components */}
+		</SolanaProvider>
+	);
+}
+```
+
+Query hooks lean on SWR v2 defaults (revalidate on focus/reconnect/if stale, 2s deduping, 5s focus throttle) and
+accept overrides under the `swr` option.
+
 ## Compute-unit tuned transactions
 
 `useTransactionPool` now exposes the same `prepareAndSend` helper that lives in `@solana/client`. You can surface compute-unit simulation plus logging in a single call:
