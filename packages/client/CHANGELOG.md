@@ -1,5 +1,11 @@
 # @solana/client
 
+## 1.0.0-rc.2
+
+### Patch Changes
+
+- Prep next release candidate with recent docs and hydration updates.
+
 ## 1.0.0-rc.1
 
 ### Patch Changes

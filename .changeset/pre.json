@@ -10,5 +10,5 @@
 		"@solana/test-types-smoke": "0.0.10",
 		"@solana/web3-compat-parity-tests": "0.0.0"
 	},
-	"changesets": ["rc-1-bump", "rc-2-docs-and-hydration"]
+	"changesets": ["rc-1-bump", "rc-2-docs-and-hydration", "rc-3-rc2-bump"]
 }
