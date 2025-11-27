@@ -1,4 +1,12 @@
-# @solana/example-react-hooks
+# @solana/example-vite-react
+
+## 0.0.12-rc.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @solana/client@1.0.0-rc.0
+  - @solana/react-hooks@1.0.0-rc.0
 
 ## 0.0.12
 
