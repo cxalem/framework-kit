@@ -1,5 +1,11 @@
 # @solana/react-hooks
 
+## 1.5.0
+
+### Minor Changes
+
+- [`6051d1b`](https://github.com/solana-foundation/framework-kit/commit/6051d1b4253bb41a56e77c31596024a7d9cabbe1) Thanks [@cxalem](https://github.com/cxalem)! - Add `useClassifiedTransactions` hook for fetching classified Solana transactions with automatic spam filtering, protocol detection, and transaction classification via tx-indexer SDK. The hook supports cursor-based pagination through `oldestSignature` and `hasMore` return values.
+
 ## 1.4.1
 
 ### Patch Changes
